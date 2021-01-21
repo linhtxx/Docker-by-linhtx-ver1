@@ -1,0 +1,47 @@
+version: '3'
+services:
+  php:
+    image: magento/magento-cloud-docker-php:7.0-fpm
+    container_name: php
+    build: php
+    volumes:
+      - ./code:/var/www/html
+    networks:
+      appnet:
+        ipv4_address: '10.1.0.100' 
+  nginx:
+    image: magento/magento-cloud-docker-nginx
+    container_name: nginx
+    build: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./code:/var/www/html
+    networks:
+      - appnet
+
+  db:
+    image: mariadb
+    container_name: mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bbm223
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    networks:
+      - appnet
+
+volumes:
+  db_data:
+    driver: "local"
+
+networks:
+  appnet:
+    ipam:
+       driver: default
+       config:
+          - subnet: 10.1.0.0/24
