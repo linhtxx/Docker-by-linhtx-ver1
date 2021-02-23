@@ -29,11 +29,11 @@ services:
       - 3307:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: bbm223
+      MYSQL_DATABASE: magento
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     networks:
-      - appnet
+      appnet:
           ipv4_address: '10.1.0.103' 
 
 volumes:
